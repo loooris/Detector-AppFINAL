@@ -98,6 +98,7 @@ public class MultiBoxTracker {
     borderedText = new BorderedText(textSizePx);
   }
 
+
   public synchronized void setFrameConfiguration(
       final int width, final int height, final int sensorOrientation) {
     frameWidth = width;
