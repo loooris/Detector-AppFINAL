@@ -153,16 +153,17 @@ public class MultiBoxTracker {
       float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
       canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
 
+
+     /* TODO : MOTS + POURCENTAGE : A SUPPRIMER
       final String labelString =
-              !TextUtils.isEmpty(recognition.title)
-                      ? String.format("%s %.2f", recognition.title, (100 * recognition.detectionConfidence))
-                      : String.format("%.2f", (100 * recognition.detectionConfidence));
+          !TextUtils.isEmpty(recognition.title)
+              ? String.format("%s %.2f", recognition.title, (100 * recognition.detectionConfidence))
+              : String.format("%.2f", (100 * recognition.detectionConfidence));
       //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
       // labelString);
 
-
       borderedText.drawText(
-              canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);
+          canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);*/
     }
   }
 
