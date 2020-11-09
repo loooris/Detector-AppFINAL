@@ -30,7 +30,9 @@ import android.util.TypedValue;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
 import org.tensorflow.lite.examples.detection.env.BorderedText;
+
 import org.tensorflow.lite.examples.detection.env.ImageUtils;
 import org.tensorflow.lite.examples.detection.env.Logger;
 import org.tensorflow.lite.examples.detection.tflite.Detector.Recognition;
@@ -61,8 +63,10 @@ public class MultiBoxTracker {
   private final Queue<Integer> availableColors = new LinkedList<Integer>();
   private final List<TrackedRecognition> trackedObjects = new LinkedList<TrackedRecognition>();
   private final Paint boxPaint = new Paint();
+
   private final float textSizePx;
   private final BorderedText borderedText;
+
   private Matrix frameToCanvasMatrix;
   private int frameWidth;
   private int frameHeight;
@@ -79,6 +83,7 @@ public class MultiBoxTracker {
     boxPaint.setStrokeCap(Cap.ROUND);
     boxPaint.setStrokeJoin(Join.ROUND);
     boxPaint.setStrokeMiter(100);
+
 
     textSizePx =
         TypedValue.applyDimension(
@@ -107,6 +112,7 @@ public class MultiBoxTracker {
       final RectF rect = detection.second;
       canvas.drawRect(rect, boxPaint);
       canvas.drawText("" + detection.first, rect.left, rect.top, textPaint);
+
       borderedText.drawText(canvas, rect.centerX(), rect.centerY(), "" + detection.first);
     }
   }
@@ -149,6 +155,8 @@ public class MultiBoxTracker {
               : String.format("%.2f", (100 * recognition.detectionConfidence));
       //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
       // labelString);
+
+
       borderedText.drawText(
           canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);
     }
