@@ -185,6 +185,11 @@ public class MultiBoxTracker {
                     (int) Math.floor((double) trackedPos.top),
                     (int) Math.floor((double) trackedPos.bottom));
 
+            if (x+50<positions[i][0] && x>positions[i][0]+50 &&
+                y+50<positions[i][1] && y>positions[i][1]+50) {
+
+            }
+
             positions[i][0] = x;
             positions[i][1] = y;
           }
