@@ -28,12 +28,15 @@ import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.text.TextUtils;
+import android.text.format.Time;
 import android.util.Pair;
 import android.util.TypedValue;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.Timer;
 
 import org.tensorflow.lite.examples.detection.R;
 import org.tensorflow.lite.examples.detection.env.BorderedText;
@@ -77,6 +80,10 @@ public class MultiBoxTracker {
   private int frameHeight;
   private int sensorOrientation;
   private Context context;
+
+  private String title = "gay";
+  private final int[][] positions = new int[10][2];
+  private final int[] rectPosition = new int[2];
 
   public MultiBoxTracker(final Context context) {
     this.context = context;
@@ -160,20 +167,49 @@ public class MultiBoxTracker {
       float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
       canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
 
+      Paint p = new Paint();
+      Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.virus_144px);
+      b = getResizedBitmap(b, 100, 100);
+      Thread t = new Thread(() -> {
+        if (!recognition.title.equals(title)) {
+          title = recognition.title;
+          rectPosition[0] = (int) Math.floor((double) trackedPos.left);
+          rectPosition[1] = (int) Math.floor((double) trackedPos.top);
 
-        Paint p = new Paint();
-        Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.virus_144px);
-        b = getResizedBitmap(b, 100, 100);
-      for (int i=0 ; i<10 ; i++) {
-        int x = getRandomNumberInRange(
-                (int)Math.floor((double)trackedPos.left),
-                (int)Math.floor((double)trackedPos.right));
-        int y = getRandomNumberInRange(
-                (int)Math.floor((double)trackedPos.top),
-                (int)Math.floor((double)trackedPos.bottom));
-        canvas.drawBitmap(b,x-52,y-52,p);
+          for (int i=0 ; i<10 ; i++) {
+
+            int x = getRandomNumberInRange(
+                    (int) Math.floor((double) trackedPos.left),
+                    (int) Math.floor((double) trackedPos.right));
+            int y = getRandomNumberInRange(
+                    (int) Math.floor((double) trackedPos.top),
+                    (int) Math.floor((double) trackedPos.bottom));
+
+            positions[i][0] = x;
+            positions[i][1] = y;
+          }
+        } else {
+          for (int i=0 ; i<10 ; i++) {
+            positions[i][0] = (int)trackedPos.left-rectPosition[0]+positions[i][0];
+            positions[i][1] = (int)trackedPos.top-rectPosition[1]+positions[i][1];
+
+          }
+          rectPosition[0] = (int) Math.floor((double) trackedPos.left);
+          rectPosition[1] = (int) Math.floor((double) trackedPos.top);
+        }
+
+      });
+      try {
+        t.start();
+        t.join();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
 
+
+      for (int i=0 ; i<10 ; i++) {
+        canvas.drawBitmap(b,positions[i][0]-52,positions[i][1]-52,p);
+      }
 
      /* TODO : MOTS + POURCENTAGE : A SUPPRIMER
       final String labelString =
