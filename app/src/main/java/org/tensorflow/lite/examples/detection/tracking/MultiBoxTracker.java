@@ -140,8 +140,12 @@ public class MultiBoxTracker {
             (int) (multiplier * (rotated ? frameWidth : frameHeight)),
             sensorOrientation,
             false);
-    for (final TrackedRecognition recognition : trackedObjects) {
+
+    if (trackedObjects.size() != 0) {
+      final TrackedRecognition recognition = trackedObjects.get(0);
       final RectF trackedPos = new RectF(recognition.location);
+      System.out.println("X : "+trackedPos.centerX());
+      System.out.println("TOP : "+trackedPos.top);
 
       getFrameToCanvasMatrix().mapRect(trackedPos);
       boxPaint.setColor(recognition.color);
@@ -150,15 +154,15 @@ public class MultiBoxTracker {
       canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
 
       final String labelString =
-          !TextUtils.isEmpty(recognition.title)
-              ? String.format("%s %.2f", recognition.title, (100 * recognition.detectionConfidence))
-              : String.format("%.2f", (100 * recognition.detectionConfidence));
+              !TextUtils.isEmpty(recognition.title)
+                      ? String.format("%s %.2f", recognition.title, (100 * recognition.detectionConfidence))
+                      : String.format("%.2f", (100 * recognition.detectionConfidence));
       //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
       // labelString);
 
 
       borderedText.drawText(
-          canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);
+              canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);
     }
   }
 
