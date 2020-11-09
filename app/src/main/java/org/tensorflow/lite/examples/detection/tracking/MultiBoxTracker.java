@@ -159,8 +159,9 @@ public class MultiBoxTracker {
       float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
       canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
       Paint p = new Paint();
-      Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.sample_image);
-      canvas.drawBitmap(b,10,10,p);
+      Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.virus_144px);
+      b = getResizedBitmap(b, 100, 100);
+      canvas.drawBitmap(b,trackedPos.centerX(),trackedPos.centerY(),p);
 
      /* TODO : MOTS + POURCENTAGE : A SUPPRIMER
       final String labelString =
@@ -228,5 +229,18 @@ public class MultiBoxTracker {
     float detectionConfidence;
     int color;
     String title;
+  }
+
+  private Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+    int width = bm.getWidth();
+    int height = bm.getHeight();
+    float scaleWidth = ((float) newWidth) / width;
+    float scaleHeight = ((float) newHeight) / height;
+    // create a matrix for the manipulation
+    Matrix matrix = new Matrix();
+    // resize the bit map
+    matrix.postScale(scaleWidth, scaleHeight);
+    // recreate the new Bitmap
+    return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
   }
 }
