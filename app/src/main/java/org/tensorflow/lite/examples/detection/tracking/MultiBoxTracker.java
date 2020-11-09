@@ -158,7 +158,7 @@ public class MultiBoxTracker {
       float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
       canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
       Paint p = new Paint();
-      Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_icons8_virus);
+      Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.sample_image);
       canvas.drawBitmap(b,10,10,p);
 
      /* TODO : MOTS + POURCENTAGE : A SUPPRIMER
