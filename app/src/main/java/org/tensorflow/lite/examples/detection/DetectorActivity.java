@@ -133,16 +133,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     frameToCropTransform.invert(cropToFrameTransform);
 
     trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
+
     trackingOverlay.addCallback(
-        new DrawCallback() {
-          @Override
-          public void drawCallback(final Canvas canvas) {
-            tracker.draw(canvas);
-            if (isDebug()) {
-              tracker.drawDebug(canvas);
-            }
-          }
-        });
+            canvas -> {
+              tracker.draw(canvas);
+              if (isDebug()) {
+                tracker.drawDebug(canvas);
+              }
+            });
 
     tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
   }

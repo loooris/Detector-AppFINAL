@@ -16,6 +16,9 @@ limitations under the License.
 package org.tensorflow.lite.examples.detection.tracking;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -31,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.tensorflow.lite.examples.detection.R;
 import org.tensorflow.lite.examples.detection.env.BorderedText;
 
 import org.tensorflow.lite.examples.detection.env.ImageUtils;
@@ -71,8 +75,11 @@ public class MultiBoxTracker {
   private int frameWidth;
   private int frameHeight;
   private int sensorOrientation;
+  private Context context;
 
   public MultiBoxTracker(final Context context) {
+    this.context = context;
+
     for (final int color : COLORS) {
       availableColors.add(color);
     }
@@ -144,15 +151,15 @@ public class MultiBoxTracker {
     if (trackedObjects.size() != 0) {
       final TrackedRecognition recognition = trackedObjects.get(0);
       final RectF trackedPos = new RectF(recognition.location);
-      System.out.println("X : "+trackedPos.centerX());
-      System.out.println("TOP : "+trackedPos.top);
 
       getFrameToCanvasMatrix().mapRect(trackedPos);
       boxPaint.setColor(recognition.color);
 
       float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
       canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
-
+      Paint p = new Paint();
+      Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_icons8_virus);
+      canvas.drawBitmap(b,10,10,p);
 
      /* TODO : MOTS + POURCENTAGE : A SUPPRIMER
       final String labelString =
