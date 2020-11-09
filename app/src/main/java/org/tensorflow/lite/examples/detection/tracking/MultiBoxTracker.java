@@ -33,6 +33,7 @@ import android.util.TypedValue;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 
 import org.tensorflow.lite.examples.detection.R;
 import org.tensorflow.lite.examples.detection.env.BorderedText;
@@ -158,10 +159,21 @@ public class MultiBoxTracker {
 
       float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
       canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
-      Paint p = new Paint();
-      Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.virus_144px);
-      b = getResizedBitmap(b, 100, 100);
-      canvas.drawBitmap(b,trackedPos.centerX(),trackedPos.centerY(),p);
+
+
+        Paint p = new Paint();
+        Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.virus_144px);
+        b = getResizedBitmap(b, 100, 100);
+      for (int i=0 ; i<10 ; i++) {
+        int x = getRandomNumberInRange(
+                (int)Math.floor((double)trackedPos.left),
+                (int)Math.floor((double)trackedPos.right));
+        int y = getRandomNumberInRange(
+                (int)Math.floor((double)trackedPos.top),
+                (int)Math.floor((double)trackedPos.bottom));
+        canvas.drawBitmap(b,x-52,y-52,p);
+      }
+
 
      /* TODO : MOTS + POURCENTAGE : A SUPPRIMER
       final String labelString =
@@ -242,5 +254,21 @@ public class MultiBoxTracker {
     matrix.postScale(scaleWidth, scaleHeight);
     // recreate the new Bitmap
     return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+  }
+
+  private Bitmap RotateBitmap(Bitmap source, float angle) {
+    Matrix matrix = new Matrix();
+    matrix.postRotate(angle);
+    return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+  }
+
+  private static int getRandomNumberInRange(int min, int max) {
+
+    if (min >= max) {
+      throw new IllegalArgumentException("max must be greater than min");
+    }
+
+    Random r = new Random();
+    return r.nextInt((max - min) + 1) + min;
   }
 }
