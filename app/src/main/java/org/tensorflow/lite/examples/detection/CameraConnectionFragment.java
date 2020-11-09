@@ -25,7 +25,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -207,18 +206,9 @@ public class CameraConnectionFragment extends Fragment {
    * @param height The minimum desired height
    * @return The optimal {@code Size}, or an arbitrary one if none were big enough
    */
-
-  public static int getWidth(){
-    return Resources.getSystem().getDisplayMetrics().widthPixels;
-  };
-
-  public static int getHeight(){
-    return Resources.getSystem().getDisplayMetrics().heightPixels;
-  };
-
   protected static Size chooseOptimalSize(final Size[] choices, final int width, final int height) {
     final int minSize = Math.max(Math.min(width, height), MINIMUM_PREVIEW_SIZE);
-    final Size desiredSize = new Size(getWidth(), getHeight());
+    final Size desiredSize = new Size(width, height);
 
     // Collect the supported resolutions that are at least as big as the preview Surface
     boolean exactSizeFound = false;

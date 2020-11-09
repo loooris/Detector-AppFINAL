@@ -16,7 +16,6 @@
 
 package org.tensorflow.lite.examples.detection;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -51,14 +50,6 @@ import org.tensorflow.lite.examples.detection.tracking.MultiBoxTracker;
 public class DetectorActivity extends CameraActivity implements OnImageAvailableListener {
   private static final Logger LOGGER = new Logger();
 
-  public static int getWidth(){
-    return Resources.getSystem().getDisplayMetrics().widthPixels;
-  };
-
-  public static int getHeight(){
-    return Resources.getSystem().getDisplayMetrics().heightPixels;
-  };
-
 
   // Configuration values for the prepackaged SSD model.
   private static final int TF_OD_API_INPUT_SIZE = 300;
@@ -69,7 +60,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   // Minimum detection confidence to track a detection.
   private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.5f;
   private static final boolean MAINTAIN_ASPECT = false;
-  private static final Size DESIRED_PREVIEW_SIZE = new Size(getWidth(), getHeight());
+  private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
   private static final boolean SAVE_PREVIEW_BITMAP = false;
   private static final float TEXT_SIZE_DIP = 10;
   OverlayView trackingOverlay;
