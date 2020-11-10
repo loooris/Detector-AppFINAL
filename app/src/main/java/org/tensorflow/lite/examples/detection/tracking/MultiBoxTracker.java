@@ -86,7 +86,7 @@ public class MultiBoxTracker {
   private Context context;
 
   private String title = "gay";
-  private final int maxVirus = 20;
+  private final int maxVirus = 10;
   private final int[][] positions = new int[maxVirus][2];
   private final int[] rectPosition = new int[2];
 
@@ -171,7 +171,7 @@ public class MultiBoxTracker {
       boxPaint.setColor(recognition.color);
 
       float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
-      canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
+      //canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
 
       Paint p = new Paint();
       Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.virus_144px);
