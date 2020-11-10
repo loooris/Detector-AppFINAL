@@ -26,12 +26,16 @@ import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Pair;
 import android.util.TypedValue;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -82,7 +86,8 @@ public class MultiBoxTracker {
   private Context context;
 
   private String title = "gay";
-  private final int[][] positions = new int[10][2];
+  private final int maxVirus = 20;
+  private final int[][] positions = new int[maxVirus][2];
   private final int[] rectPosition = new int[2];
 
   public MultiBoxTracker(final Context context) {
@@ -143,6 +148,7 @@ public class MultiBoxTracker {
   }
 
   public synchronized void draw(final Canvas canvas) {
+
     final boolean rotated = sensorOrientation % 180 == 90;
     final float multiplier =
         Math.min(
@@ -176,7 +182,7 @@ public class MultiBoxTracker {
           rectPosition[0] = (int) Math.floor((double) trackedPos.left);
           rectPosition[1] = (int) Math.floor((double) trackedPos.top);
 
-          for (int i=0 ; i<10 ; i++) {
+          for (int i=0 ; i<maxVirus ; i++) {
 
             int x = getRandomNumberInRange(
                     (int) Math.floor((double) trackedPos.left),
@@ -188,8 +194,9 @@ public class MultiBoxTracker {
             positions[i][0] = x;
             positions[i][1] = y;
           }
+
         } else {
-          for (int i=0 ; i<10 ; i++) {
+          for (int i=0 ; i<maxVirus ; i++) {
             positions[i][0] = (int)trackedPos.left-rectPosition[0]+positions[i][0];
             positions[i][1] = (int)trackedPos.top-rectPosition[1]+positions[i][1];
 
@@ -206,9 +213,34 @@ public class MultiBoxTracker {
         e.printStackTrace();
       }
 
+      int counter = 0;
+      List<int[]> list = new ArrayList<>();
+      Collections.addAll(list, positions);
+      int virusSize = 72;
+      for (int i=0 ; i<maxVirus ; i++) {
+        Rect r1 = new Rect(
+                positions[i][0],
+                positions[i][1],
+                positions[i][0]+virusSize,
+                positions[i][1]+virusSize);
+        for (int j=0 ; j<maxVirus ; j++) {
+          Rect r2 = new Rect(
+                  positions[j][0],
+                  positions[j][1],
+                  positions[j][0]+virusSize,
+                  positions[j][1]+virusSize);
+          if (r1.centerX() != r2.centerX() && r1.centerY() != r2.centerY()) {
+            if (Rect.intersects(r1,r2)) {
+              list.remove(i-counter);
+              counter++;
+              break;
+            }
+          }
+        }
+      }
 
-      for (int i=0 ; i<10 ; i++) {
-        canvas.drawBitmap(b,positions[i][0]-52,positions[i][1]-52,p);
+      for (int[] position : list) {
+        canvas.drawBitmap(b,position[0]-52,position[1]-52,p);
       }
 
      /* TODO : MOTS + POURCENTAGE : A SUPPRIMER
